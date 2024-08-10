@@ -4,6 +4,7 @@ import controller from '../controllers/auth.controller.js'
 
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
+
 const router = new Router()
 
 router.post('/registration', controller.registration)

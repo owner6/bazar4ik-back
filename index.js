@@ -1,24 +1,24 @@
-const express = require('express');
-const { Pool } = require('pg');
+import express from 'express'
+import prisma from './src/lib/prisma.js'
+import authRouter from './src/routes/auth.router.js'
+import dotenv from 'dotenv';
+import cors from 'cors';
+dotenv.config(); 
 
 const app = express();
-const port = 3000;
 
-// Подключение к базе данных
-const pool = new Pool({
-  connectionString: 'postgres://owner:jybotyrj21021995@127.0.0.1:5432/db-bazarchik?schema=public'
-});
+const PORT = process.env.SERVER_PORT || 3000
 
-app.get('/', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.send(`Hello World! Current time is: ${result.rows[0].now}`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Something went wrong!');
-  }
-});
+app.use(cors())
 
-app.listen(port, () => {
-  console.log(`Server running at http://127.0.0.1:${port}/`);
-});
+app.use(express.json())
+
+app.use("/auth", authRouter)
+
+const start = async () => {
+  await prisma.$connect();
+
+  app.listen(PORT, () => console.log(`server started on port ${PORT}`))
+}
+
+start()
