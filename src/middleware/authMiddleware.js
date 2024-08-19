@@ -3,27 +3,43 @@ import jwt from 'jsonwebtoken';
 const secret = process.env.SECRET_KEY;
 
 export function authMiddleware(req, res, next) {
-  if(req.method === 'OPTIONS') {
-    next()
+  // Для предобработки запросов с методом OPTIONS (CORS)
+  if (req.method === 'OPTIONS') {
+    return next();
   }
 
   try {
-    const token = req.headers.authorization?.split(' ')[1]; 
+    // Получение token  header Authorization
+    const authToken = req.headers.authorization?.split(' ')[1];
 
-    if (!token) {
+    // if token отсутствует, возвращаем status 401
+    if (!authToken) {
       return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
-    const decodedData = jwt.verify(token, secret);
+    // check next decoding token
+    const decodedData = jwt.verify(authToken, secret);
 
-    if (decodedData.role === 'admin') {
-      req.user = decodedData;
-      next()
-    } else {
-      return res.status(403).json({message: 'Access denied: Insufficient role'})
+    // check, есть ли у users достаточная role
+    if (decodedData.role !== 'user') {
+      return res.status(403).json({ message: 'Access denied: Insufficient role' });
     }
-  } catch(e) {
-    console.log(e) 
-    return res.status(403).json({message: "User is not autherization"})
+
+    // save data user in object запроса for дальнейшего использования
+    req.user = decodedData;
+    
+    // next выполнение запроса
+    next();
+  } catch (e) {
+    // Обработка errors validation token
+    if (e.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Unauthorized: Token expired' });
+    } else if (e.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+    }
+
+    // loging and return общей error
+    console.log(e);
+    return res.status(403).json({ message: 'User is not authorized' });
   }
 }
