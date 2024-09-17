@@ -19,27 +19,29 @@ class authController {
   async registration(req, res) {
     try {
       console.log('User registration started');
-
-      const { email, firstname, lastname, phone, password } = req.body;
-
+  
+      const { email, phone, lastname, firstname, password } = req.body;
+  
+      // Basic email and password validation
       if (password.length < 4 || password.length > 18) {
-        throw new Error('Invalid email or password format');
+        return res.status(400).json({ message: 'Password must be between 4 and 18 characters long' });
       }
-      
-      if (!/@/.test(email)) {
-        throw new Error('Invalid email or password format');
+  
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
       }
-
+  
       const hashedPassword = await bcrypt.hash(password, 10);
-
+  
+      // Check if the user already exists
       const candidate = await prisma.users.findFirst({ where: { email } });
-
       if (candidate) {
         console.log('User already exists');
-
-        return res.status(500).json({ message: 'A user with the same username already exists' });
+        return res.status(409).json({ message: 'A user with this email already exists' });
       }
-
+  
+      // Create new user
       const newUser = await prisma.users.create({
         data: {
           firstname,
@@ -47,18 +49,19 @@ class authController {
           email,
           phone,
           password: hashedPassword,
-          role: 'user'
-        }
+          role: 'user',
+        },
       });
-
-      console.log('User successfully registered')
-
-      return res.json({ message: 'User successfully registered' });
+  
+      console.log('User successfully registered');
+      return res.status(201).json({ message: 'User successfully registered' });
+  
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: 'Error during registration' });
     }
   }
+  
 
   async login(req, res) {
     try {
@@ -89,11 +92,12 @@ class authController {
   async getUsers(req, res) {
     try {
       const { role } = req.user
-      if (role !== 'admin') {
+      if (role !== 'user') {
         return res.status(403).json({ message: 'Permission denied: You are not an admin' });
       }
       
       const users = await prisma.users.findMany();
+      console.log(users)
       
       return res.json(users);
     } catch (e) {
