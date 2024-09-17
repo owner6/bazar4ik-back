@@ -1,6 +1,7 @@
 import express from 'express'
 import prisma from './src/lib/prisma.js'
 import authRouter from './src/routes/auth.router.js'
+import creatingAdsRouter from './src/routes/creatingAds.router.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 dotenv.config(); 
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/auth", authRouter)
+app.use("/creatingAds", creatingAdsRouter)
 
 const start = async () => {
   await prisma.$connect();
