@@ -12,7 +12,7 @@ export const createAd = async (req, res) => {
     }
 
     // creating new ads
-    const newAd = await prisma.ad.create({
+    const newAd = await prisma.add.create({
       data: {
         title,
         description,

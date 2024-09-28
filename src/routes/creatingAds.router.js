@@ -5,7 +5,7 @@ import { createAd } from '../controllers/creatingAds.controller.js';
 
 const router = Router();
 
-// Маршрут for creating ads
-router.post('/creatingAds', createAd);
+// route for creating ads
+router.post('/', createAd);
 
 export default router;
