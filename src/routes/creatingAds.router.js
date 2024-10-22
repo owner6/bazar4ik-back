@@ -1,5 +1,3 @@
-// routes/creatingAds.router.js
-
 import { Router } from 'express';
 import { createAd } from '../controllers/creatingAds.controller.js';
 

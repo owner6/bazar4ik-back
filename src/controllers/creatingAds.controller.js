@@ -1,10 +1,9 @@
-// controllers/adController.js
-
 import prisma from '../lib/prisma.js';
 
 export const createAd = async (req, res) => {
   try {
-    const { title, description, price, category, imageUrl, userId } = req.body;
+    const { title, description, price, category} = req.body;
+    const userId = req.user.id
 
     // checking, чи all обов'язкові inputs заповнені
     if (!title || !description || !price || !category || !userId) {
@@ -18,7 +17,6 @@ export const createAd = async (req, res) => {
         description,
         price: parseFloat(price),
         category,
-        imageUrl,
         user: { connect: { id: userId } }, // Зв'язування in user
       },
     });
