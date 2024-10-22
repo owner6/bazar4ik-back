@@ -14,13 +14,13 @@ export const getUserAds = async (req, res) => {
         createdAt: 'desc', // Sort by creation date (optional)
       },
     });
-    console.log("Отримання всіх оголошень користувача")
+    console.log("Receive all user announcements")
     // If there are no ads
     if (!ads.length) {
       return res.status(404).json({ message: 'No ads found for this user.' });
     }
 
-    // Reply with ads
+    // Відповідь з оголошеннями
     res.status(200).json(ads);
   } catch (error) {
     console.error('Error fetching user ads:', error);
