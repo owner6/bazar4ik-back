@@ -4,7 +4,7 @@ export const getUserAds = async (req, res) => {
   try {
     const userId = req.user.id; // The user ID obtained from the JWT token
       
-      console.log("Ідентифікатор користувача", userId)
+    console.log("Ідентифікатор користувача", userId)
     // Receive all user announcements
     const ads = await prisma.add.findMany({
       where: {
