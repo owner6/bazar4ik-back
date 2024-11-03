@@ -8,7 +8,7 @@ export const updateUserListing = async (req, res) => {
 
     const { id, title, description, price, category } = req.body; // Ensure you're extracting all necessary fields for the update
 
-    console.log("Получаем ID товара", id);
+    console.log("получаем ID товара", id);
     console.log("кто пользователь товара", userId);
 
     // Checking if both ID and userId are provided
