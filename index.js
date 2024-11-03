@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { authMiddleware } from './src/middleware/authMiddleware.js';
 import authRouter from './src/routes/auth.router.js';
-import creatingListingsRouter from './src/routes/creatingListings.router.js';
-import listingsUserRouter from './src/routes/listingsUser.router.js';
+import creatingListingsRouter from './src/routes/Listings/creatingListings.router.js';
+import listingsUserRouter from './src/routes/Listings/listingsUser.router.js';
 dotenv.config(); 
 
 const app = express();
