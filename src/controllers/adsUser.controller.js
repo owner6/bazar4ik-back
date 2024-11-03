@@ -15,7 +15,7 @@ export const getUserAds = async (req, res) => {
       },
     });
     console.log("Receive all user announcements")
-    // If there are no ads
+
     if (!ads.length) {
       return res.status(404).json({ message: 'No ads found for this user.' });
     }
