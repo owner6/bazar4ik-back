@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getUserAds } from '../controllers/adsUser.controller.js';
+import { getUserListings } from '../controllers/userListings.controller.js';
 
 const router = Router();
 
 // A route to receive all user announcements
-router.get('/', getUserAds);
+router.get('/', getUserListings);
 
 export default router;

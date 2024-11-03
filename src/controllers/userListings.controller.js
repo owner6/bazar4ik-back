@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma.js';
 
-export const getUserAds = async (req, res) => {
+export const getUserListings = async (req, res) => {
   try {
     const userId = req.user.id; // The user ID obtained from the JWT token
       

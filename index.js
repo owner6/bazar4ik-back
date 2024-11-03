@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { authMiddleware } from './src/middleware/authMiddleware.js';
 import authRouter from './src/routes/auth.router.js';
-import creatingAdsRouter from './src/routes/creatingAds.router.js';
-import adsUserRouter from './src/routes/adsUser.router.js';
+import creatingListingsRouter from './src/routes/creatingListings.router.js';
+import listingsUserRouter from './src/routes/listingsUser.router.js';
 dotenv.config(); 
 
 const app = express();
@@ -16,8 +16,8 @@ app.use(cors())
 
 app.use(express.json())
 app.use("/auth", authRouter)
-app.use('/create-ads', authMiddleware, creatingAdsRouter);
-app.use('/user-ads', authMiddleware, adsUserRouter)
+app.use('/create-listings', authMiddleware, creatingListingsRouter);
+app.use('/user-listings', authMiddleware, listingsUserRouter)
 const start = async () => {
   await prisma.$connect();
 
