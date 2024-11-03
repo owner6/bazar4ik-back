@@ -2,7 +2,6 @@ import prisma from '../lib/prisma.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-
 const secret = process.env.SECRET_KEY;
 
 const generateAccessToken = (id, email, phone, role) => {
@@ -34,7 +33,7 @@ class authController {
   
       const hashedPassword = await bcrypt.hash(password, 10);
   
-      // Check if the user already exists
+      // Check  чи існує користувач такий у бд
       const candidate = await prisma.users.findFirst({ where: { email } });
       if (candidate) {
         console.log('User already exists');
@@ -105,6 +104,7 @@ class authController {
       res.status(500).json({ message: 'getUsers error' });
     }
   }  
+  
 }
 
 export default new authController();
