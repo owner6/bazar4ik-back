@@ -96,3 +96,40 @@ export const getUserListingsAction = async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 };
+
+export class DeleteListingAction {
+  static async execute(req, res) {
+    try {
+      const { id } = req.body;
+      const userId = req.user.id;
+
+      if (!id || !userId) {
+        return res.status(400).json({ error: 'ID and userId must be provided.' });
+      }
+
+      // Find the listing by ID
+      const listing = await prisma.add.findUnique({
+        where: { id: parseInt(id) },
+      });
+
+      if (!listing) {
+        return res.status(404).json({ error: 'Listing not found.' });
+      }
+
+      // Check if the listing belongs to the current user
+      if (listing.userId !== userId) {
+        return res.status(403).json({ error: 'You are not authorized to delete this listing.' });
+      }
+
+      // Delete the listing
+      await prisma.add.delete({
+        where: { id: parseInt(id) },
+      });
+
+      res.status(200).json({ message: 'Listing deleted successfully.' });
+    } catch (error) {
+      console.error('Error deleting listing:', error);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+  }
+}
