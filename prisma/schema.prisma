@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  user
-  admin
-}
-
 model Users {
   id        Int      @id @default(autoincrement())
   firstname String   @db.VarChar(255)
@@ -21,20 +16,24 @@ model Users {
   password  String   @db.VarChar
   role      Role     @default(user)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt  
-
+  updatedAt DateTime @updatedAt
   ads       Add[]    @relation("UserAds")
 }
 
 model Add {
-  id            Int @id @default(autoincrement())
-  title         String
-  description   String
-  price         Float
-  category      String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  isActive    Boolean  @default(true)
+  user        Users    @relation("UserAds", fields: [userId], references: [id])
+}
 
-  userId        Int
-  user          Users  @relation(fields: [userId], references: [id], name: "UserAds")
+enum Role {
+  user
+  admin
 }

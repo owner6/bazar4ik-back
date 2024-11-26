@@ -33,7 +33,7 @@ class authController {
   
       const hashedPassword = await bcrypt.hash(password, 10);
   
-      // Check  чи існує користувач такий у бд
+      // Check чи існує користувач такий у бд
       const candidate = await prisma.users.findFirst({ where: { email } });
       if (candidate) {
         console.log('User already exists');
@@ -103,8 +103,7 @@ class authController {
       console.error(e);
       res.status(500).json({ message: 'getUsers error' });
     }
-  }  
-  
+  }
 }
 
 export default new authController();
