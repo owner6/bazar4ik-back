@@ -96,8 +96,6 @@ export const deactivateListingAction = async (req, res, next) => {
   }
 };
 
-
-
 export const getInactiveListingsAction = async (req, res, next) => {
   try {
     const userId = req.user?.id;
