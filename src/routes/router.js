@@ -19,7 +19,7 @@ router.get('/listings', authMiddleware, getUserListingsAction);
 router.get('/listings/:id', () => {});
 router.put('/listings/:id', authMiddleware, updateUserListingAction);
 router.delete('/listings/:id', authMiddleware, deleteListingAction);
-router.patch('/listings/:id/deactivate', deactivateListingAction);
+router.patch('/listings/:id/deactivate', authMiddleware,   deactivateListingAction);
 //router.get("/inactive", getInactiveListings);
 
 export default router;

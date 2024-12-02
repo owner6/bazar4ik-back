@@ -75,7 +75,7 @@ export const deleteListingAction = async (req, res, next) => {
   }
 };
 
-export const deactivateListingAction = async (req, res, next) => {
+  export const deactivateListingAction = async (req, res, next) => {
   try {
     const userId = req.user.id;
     console.log(userId)
