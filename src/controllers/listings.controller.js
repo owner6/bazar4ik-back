@@ -96,3 +96,46 @@ export const getUserListingsAction = async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 };
+
+export const deleteListingAction = async (req, res) => {
+  try {
+    const userId = req.user.id; // Ідентифікатор користувача з токена
+    const { id } = req.params; // Ідентифікатор оголошення з параметрів URL
+
+    console.log("Ідентифікатори користувача та товару")
+
+    // Перевірка, чи ID оголошення і ID користувача присутні
+    if (!id || !userId) {
+      return res.status(400).json({ error: 'Listing ID and userId must be provided.' });
+    }
+
+    console.log("Перевірка, чи ID оголошення і ID користувача присутні")
+
+    // Знаходимо оголошення, яке треба видалити
+    const listing = await prisma.add.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    console.log(listing, "Знаходимо оголошення, яке треба видалити")
+
+    // Перевірка, чи існує оголошення
+    if (!listing) {
+      return res.status(404).json({ error: 'Listing not found.' });
+    }
+    console.log("Перевірка, чи існує оголошення")
+
+    // Видалення оголошення
+    await prisma.add.delete({
+      where: { id: parseInt(id) },
+    });
+
+    console.log("Видалення оголошення")
+ 
+    res.status(200).json({ message: 'Listing deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting listing:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+
