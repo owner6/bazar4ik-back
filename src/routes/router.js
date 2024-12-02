@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import authController from "../controllers/auth.controller.js";
-import { createListingAction, getUserListingsAction, updateUserListingAction, deleteListingAction } from "../controllers/listings.controller.js";
+import { createListingAction, getUserListingsAction, updateUserListingAction, deleteListingAction, deactivateListingAction} from "../controllers/listings.controller.js";
 
 const router = Router();
 
@@ -19,5 +19,7 @@ router.get('/listings', authMiddleware, getUserListingsAction);
 router.get('/listings/:id', () => {});
 router.put('/listings/:id', authMiddleware, updateUserListingAction);
 router.delete('/listings/:id', authMiddleware, deleteListingAction);
+router.patch('/listings/:id/deactivate', deactivateListingAction);
+//router.get("/inactive", getInactiveListings);
 
 export default router;
