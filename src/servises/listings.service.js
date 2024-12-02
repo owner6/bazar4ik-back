@@ -75,3 +75,17 @@ export const deactivateListing = async ({ id, userId }) => {
         data: {isActive: false}
     });
 };
+
+export const getInactiveListings = async (userId) => {
+    const listings = await prisma.add.findMany({
+        where: {
+            userId,
+            isActive: false
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
+
+    return listings;
+};

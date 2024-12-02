@@ -3,7 +3,8 @@ import {
   updateListing,
   getUserListings,
   deleteListing,
-  deactivateListing
+  deactivateListing,
+  getInactiveListings
 } from '../servises/listings.service.js';
 import { validateListingData } from '../validators/listing.validator.js';
 import { AppError } from '../utils/errors.js';
@@ -77,7 +78,7 @@ export const deleteListingAction = async (req, res, next) => {
 
 export const deactivateListingAction = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id;
     console.log(userId)
     const { id } = req.params;
 
@@ -90,6 +91,23 @@ export const deactivateListingAction = async (req, res, next) => {
       message: 'Listing deactivated successfully',
       listing: updatedListing
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+export const getInactiveListingsAction = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError('User ID is required', 400);
+    }
+
+    const inactiveListings = await getInactiveListings(userId);
+    res.status(200).json(inactiveListings);
   } catch (error) {
     next(error);
   }
