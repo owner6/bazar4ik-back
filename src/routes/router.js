@@ -2,7 +2,14 @@ import { Router } from 'express';
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import authController from "../controllers/auth.controller.js";
-import { createListingAction, getUserListingsAction, updateUserListingAction, deleteListingAction, deactivateListingAction} from "../controllers/listings.controller.js";
+import {
+  createListingAction,
+  getUserListingsAction,
+  updateUserListingAction,
+  deleteListingAction,
+  toggleListingStatusAction,
+  getInactiveListingsAction
+} from "../controllers/listings.controller.js";
 
 const router = Router();
 
@@ -19,7 +26,12 @@ router.get('/listings', authMiddleware, getUserListingsAction);
 router.get('/listings/:id', () => {});
 router.put('/listings/:id', authMiddleware, updateUserListingAction);
 router.delete('/listings/:id', authMiddleware, deleteListingAction);
+<<<<<<< HEAD
 router.patch('/listings/:id/deactivate', authMiddleware,   deactivateListingAction);
 //router.get("/inactive", getInactiveListings);
+=======
+router.patch('/listings/:id/deactivate', authMiddleware, toggleListingStatusAction);
+router.get("/inactive", authMiddleware, getInactiveListingsAction);
+>>>>>>> refs/remotes/origin/main
 
 export default router;

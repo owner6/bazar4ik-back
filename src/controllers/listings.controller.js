@@ -3,7 +3,8 @@ import {
   updateListing,
   getUserListings,
   deleteListing,
-  deactivateListing
+  toggleListingStatus,
+  getInactiveListings
 } from '../servises/listings.service.js';
 import { validateListingData } from '../validators/listing.validator.js';
 import { AppError } from '../utils/errors.js';
@@ -75,21 +76,35 @@ export const deleteListingAction = async (req, res, next) => {
   }
 };
 
-  export const deactivateListingAction = async (req, res, next) => {
+export const toggleListingStatusAction = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    console.log(userId)
+    const userId = req.user?.id;
     const { id } = req.params;
 
     if (!id || !userId) {
       throw new AppError('Listing ID and user ID are required', 400);
     }
 
-    const updatedListing = await deactivateListing({ id: parseInt(id), userId });
+    const updatedListing = await toggleListingStatus({ id: parseInt(id), userId });
     res.status(200).json({
-      message: 'Listing deactivated successfully',
+      message: `Listing status updated successfully to ${updatedListing.isActive ? 'active' : 'inactive'}`,
       listing: updatedListing
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getInactiveListingsAction = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError('User ID is required', 400);
+    }
+
+    const inactiveListings = await getInactiveListings(userId);
+    res.status(200).json(inactiveListings);
   } catch (error) {
     next(error);
   }
