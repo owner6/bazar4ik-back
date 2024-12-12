@@ -7,7 +7,7 @@ import {
   getUserListingsAction,
   updateUserListingAction,
   deleteListingAction,
-  deactivateListingAction,
+  toggleListingStatusAction,
   getInactiveListingsAction
 } from "../controllers/listings.controller.js";
 
@@ -26,7 +26,7 @@ router.get('/listings', authMiddleware, getUserListingsAction);
 router.get('/listings/:id', () => {});
 router.put('/listings/:id', authMiddleware, updateUserListingAction);
 router.delete('/listings/:id', authMiddleware, deleteListingAction);
-router.patch('/listings/:id/deactivate', authMiddleware, deactivateListingAction);
+router.patch('/listings/:id/deactivate', authMiddleware, toggleListingStatusAction);
 router.get("/inactive", authMiddleware, getInactiveListingsAction);
 
 export default router;

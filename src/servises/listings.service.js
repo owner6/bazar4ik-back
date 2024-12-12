@@ -59,7 +59,7 @@ export const deleteListing = async ({ id, userId }) => {
     return await prisma.add.delete({ where: { id } });
 };
 
-export const deactivateListing = async ({ id, userId }) => {
+export const toggleListingStatus = async ({ id, userId }) => {
     const listing = await prisma.add.findUnique({ where: { id } });
 
     if (!listing) {
@@ -67,12 +67,12 @@ export const deactivateListing = async ({ id, userId }) => {
     }
 
     if (listing.userId !== userId) {
-        throw new AppError('Not authorized to deactivate this listing', 403);
+        throw new AppError('Not authorized to modify this listing', 403);
     }
 
     return prisma.add.update({
-        where: {id},
-        data: {isActive: false}
+        where: { id },
+        data: { isActive: !listing.isActive },
     });
 };
 
