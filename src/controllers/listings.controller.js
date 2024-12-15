@@ -8,7 +8,7 @@ import {
 } from '../servises/listings.service.js';
 import { validateRequiredFields, validateUserId, validateListingData } from '../utils/validators.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { ValidationError, NotFoundError, ForbiddenError } from '../utils/errors.js';
+import { ValidationError } from '../utils/errors.js';
 
 export const createListingAction = asyncHandler(async (req, res) => {
 
@@ -30,7 +30,7 @@ export const createListingAction = asyncHandler(async (req, res) => {
   res.status(201).json(newListing);
 });
 
-export const updateUserListingAction = asyncHandler(async( req, res, next) => {
+export const updateUserListingAction = asyncHandler(async( req, res) => {
   const userId = req.user?.id;
   const { id, title, description, price, category } = req.body;
 
@@ -51,7 +51,7 @@ export const updateUserListingAction = asyncHandler(async( req, res, next) => {
   res.status(200).json(updatedListing);
 });
 
-export const getUserListingsAction = asyncHandler(async (req, res, next) => {
+export const getUserListingsAction = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
 
   validateUserId(userId);
@@ -60,7 +60,7 @@ export const getUserListingsAction = asyncHandler(async (req, res, next) => {
   res.status(200).json(listings);
 });
 
-export const deleteListingAction = asyncHandler(async (req, res, next) => {
+export const deleteListingAction = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
   const { id } = req.params;
 
@@ -71,7 +71,7 @@ export const deleteListingAction = asyncHandler(async (req, res, next) => {
   res.status(200).json({ message: 'Listing deleted successfully' });
 });
 
-export const toggleListingStatusAction = asyncHandler( async (req, res, next) => {
+export const toggleListingStatusAction = asyncHandler( async (req, res) => {
   const userId = req.user?.id;
   const {id} = req.params;
 
@@ -83,7 +83,7 @@ export const toggleListingStatusAction = asyncHandler( async (req, res, next) =>
   });
 });
 
-export const getInactiveListingsAction = asyncHandler( async (req, res, next) => {
+export const getInactiveListingsAction = asyncHandler( async (req, res) => {
   const userId = req.user?.id;
 
   validateUserId(userId);
