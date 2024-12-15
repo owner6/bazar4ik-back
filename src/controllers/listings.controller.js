@@ -6,8 +6,7 @@ import {
   toggleListingStatus,
   getInactiveListings
 } from '../servises/listings.service.js';
-import { validateListingData } from '../validators/listing.validator.js';
-import { validateRequiredFields, validateUserId } from '../utils/validators.js';
+import { validateRequiredFields, validateUserId, validateListingData } from '../utils/validators.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { ValidationError, NotFoundError, ForbiddenError } from '../utils/errors.js';
 
