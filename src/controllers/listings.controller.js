@@ -31,44 +31,44 @@ export const createListingAction = asyncHandler(async (req, res) => {
 });
 
 export const updateUserListingAction = asyncHandler(async( req, res, next) => {
-    const userId = req.user?.id;
-    const { id, title, description, price, category } = req.body;
+  const userId = req.user?.id;
+  const { id, title, description, price, category } = req.body;
 
-    validateUserId(userId);
-    validateRequiredFields({ id }, ['id'] );
+  validateUserId(userId);
+  validateRequiredFields({ id }, ['id'] );
 
-    const validationError = validateListingData({ id, title, description, price, category, userId });
-    if (validationError) {
-      throw new ValidationError(validationError);
-    }
+  const validationError = validateListingData({ id, title, description, price, category, userId });
+  if (validationError) {
+    throw new ValidationError(validationError);
+  }
 
-    const updatedListing = await updateListing({
-      id: parseInt(id),
-      userId,
-      data: { title, description, price, category }
-    });
+  const updatedListing = await updateListing({
+    id: parseInt(id),
+    userId,
+    data: { title, description, price, category }
+  });
 
-    res.status(200).json(updatedListing);
+  res.status(200).json(updatedListing);
 });
 
 export const getUserListingsAction = asyncHandler(async (req, res, next) => {
-    const userId = req.user?.id;
+  const userId = req.user?.id;
 
-    validateUserId(userId);
+  validateUserId(userId);
 
-    const listings = await getUserListings(userId);
-    res.status(200).json(listings);
+  const listings = await getUserListings(userId);
+  res.status(200).json(listings);
 });
 
 export const deleteListingAction = asyncHandler(async (req, res, next) => {
-    const userId = req.user?.id;
-    const { id } = req.params;
+  const userId = req.user?.id;
+  const { id } = req.params;
 
-    validateUserId(userId);
-    validateRequiredFields({ id }, ['id']);
+  validateUserId(userId);
+  validateRequiredFields({ id }, ['id']);
 
-    await deleteListing({ id: parseInt(id), userId });
-    res.status(200).json({ message: 'Listing deleted successfully' });
+  await deleteListing({ id: parseInt(id), userId });
+  res.status(200).json({ message: 'Listing deleted successfully' });
 });
 
 export const toggleListingStatusAction = asyncHandler( async (req, res, next) => {
