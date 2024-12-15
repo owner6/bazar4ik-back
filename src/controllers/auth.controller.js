@@ -15,7 +15,7 @@ const generateAccessToken = (id, email, phone, role) => {
 }
 
 class authController {
-  async registration(req, res) {
+  async registration(req, res, next) {
     try {
       console.log('User registration started');
   

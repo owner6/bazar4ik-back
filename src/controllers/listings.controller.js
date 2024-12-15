@@ -7,33 +7,40 @@ import {
   getInactiveListings
 } from '../servises/listings.service.js';
 import { validateListingData } from '../validators/listing.validator.js';
-import { AppError } from '../utils/errors.js';
+import { validateRequiredFields, validateUserId } from '../utils/validators.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { ValidationError, NotFoundError, ForbiddenError } from '../utils/errors.js';
 
-export const createListingAction = async (req, res, next) => {
-  try {
-    const { title, description, price, category } = req.body;
-    const userId = req.user?.id;
+export const createListingAction = asyncHandler(async (req, res) => {
 
-    const validationError = validateListingData({ title, description, price, category, userId });
-    if (validationError) {
-      throw new AppError(validationError, 400);
-    }
+  const { title, description, price, category } = req.body;
+  const userId = req.user?.id;
 
-    const newListing = await createListing({ title, description, price, category, userId });
-    res.status(201).json(newListing);
-  } catch (error) {
-    next(error);
+  validateUserId(userId);
+  validateRequiredFields(
+    { title, description, price, category, userId },
+    ['title', 'description', 'price', 'category', 'userId']
+  );
+
+  const validationError = validateListingData({ title, description, price, category, userId });
+  if (validationError) {
+    throw new ValidationError(validationError);
   }
-};
 
-export const updateUserListingAction = async (req, res, next) => {
-  try {
+  const newListing = await createListing({ title, description, price, category, userId });
+  res.status(201).json(newListing);
+});
+
+export const updateUserListingAction = asyncHandler(async( req, res, next) => {
     const userId = req.user?.id;
     const { id, title, description, price, category } = req.body;
 
+    validateUserId(userId);
+    validateRequiredFields({ id }, ['id'] );
+
     const validationError = validateListingData({ id, title, description, price, category, userId });
     if (validationError) {
-      throw new AppError(validationError, 500);
+      throw new ValidationError(validationError);
     }
 
     const updatedListing = await updateListing({
@@ -43,69 +50,45 @@ export const updateUserListingAction = async (req, res, next) => {
     });
 
     res.status(200).json(updatedListing);
-  } catch (error) {
-    next(error);
-  }
-};
+});
 
-export const getUserListingsAction = async (req, res, next) => {
-  try {
+export const getUserListingsAction = asyncHandler(async (req, res, next) => {
     const userId = req.user?.id;
-    if (!userId) throw new AppError('User ID is required', 400);
+
+    validateUserId(userId);
 
     const listings = await getUserListings(userId);
     res.status(200).json(listings);
-  } catch (error) {
-    next(error);
-  }
-};
+});
 
-export const deleteListingAction = async (req, res, next) => {
-  try {
+export const deleteListingAction = asyncHandler(async (req, res, next) => {
     const userId = req.user?.id;
     const { id } = req.params;
 
-    if (!id || !userId) {
-      throw new AppError('Listing ID and user ID are required', 400);
-    }
+    validateUserId(userId);
+    validateRequiredFields({ id }, ['id']);
 
     await deleteListing({ id: parseInt(id), userId });
     res.status(200).json({ message: 'Listing deleted successfully' });
-  } catch (error) {
-    next(error);
-  }
-};
+});
 
-export const toggleListingStatusAction = async (req, res, next) => {
-  try {
-    const userId = req.user?.id;
-    const { id } = req.params;
+export const toggleListingStatusAction = asyncHandler( async (req, res, next) => {
+  const userId = req.user?.id;
+  const {id} = req.params;
 
-    if (!id || !userId) {
-      throw new AppError('Listing ID and user ID are required', 400);
-    }
+  const updatedListing = await toggleListingStatus({id: parseInt(id), userId});
 
-    const updatedListing = await toggleListingStatus({ id: parseInt(id), userId });
-    res.status(200).json({
-      message: `Listing status updated successfully to ${updatedListing.isActive ? 'active' : 'inactive'}`,
-      listing: updatedListing
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  res.status(200).json({
+    message: `Listing status updated successfully to ${updatedListing.isActive ? 'active' : 'inactive'}`,
+    listing: updatedListing
+  });
+});
 
-export const getInactiveListingsAction = async (req, res, next) => {
-  try {
-    const userId = req.user?.id;
+export const getInactiveListingsAction = asyncHandler( async (req, res, next) => {
+  const userId = req.user?.id;
 
-    if (!userId) {
-      throw new AppError('User ID is required', 400);
-    }
+  validateUserId(userId);
 
-    const inactiveListings = await getInactiveListings(userId);
-    res.status(200).json(inactiveListings);
-  } catch (error) {
-    next(error);
-  }
-};
+  const inactiveListings = await getInactiveListings(userId);
+  res.status(200).json(inactiveListings);
+});

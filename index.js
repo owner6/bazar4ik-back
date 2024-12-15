@@ -2,6 +2,7 @@ import express from 'express'
 import prisma from './src/lib/prisma.js'
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { errorHandler } from './src/middleware/errorHandler.js';
 
 import router from './src/routes/router.js';
 
@@ -13,6 +14,7 @@ const PORT = process.env.SERVER_PORT || 3000
 
 app.use(cors())
 app.use(express.json())
+app.use(errorHandler);
 
 app.use('/', router)
 
