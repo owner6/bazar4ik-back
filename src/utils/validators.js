@@ -11,25 +11,55 @@ export const validateUserId = (userId) => {
   if (!userId) {
     throw new ValidationError('User ID is required');
   }
+  if (typeof userId !== 'string' || userId.trim() ===  '') {
+    throw new ValidationError('user id must be  a non-empty string');
+  }
 };
 
 export const validateListingData = ({ title, description, price, category, userId }) => {
-  if (!title) return 'Title is required';
-  if (!description) return 'Description is required';
-  if (!price) return 'Price is required';
-  if (!category) return 'Category is required';
-  if (!userId) return 'User ID is required';
+  if (!title) {
+    throw new ValidationError('Title is required');
+  }
+  if (typeof title !== 'string') {
+    throw new ValidationError('Title must be a string');
+  }
+  if (title.length < 3) {
+    throw new ValidationError('Title must be at least 3 characters long');
+  }
+  if (title.length > 100) {
+    throw new ValidationError('Title must not exceed 100 characters');
+  }
 
-  if (typeof price !== 'number') return 'Price must be a number';
-  if (price <= 0) return 'Price must be greater than 0';
+  if (!description) {
+    throw new ValidationError('Description is required');
+  }
+  if (typeof description !== 'string') {
+    throw new ValidationError('Description must be a string');
+  }
+  if (description.length < 4) {
+    throw new ValidationError('Description must be at least 4 characters long');
+  }
+  if (description.length > 1000) {
+    throw new ValidationError('Description must not exceed 1000 characters');
+  }
 
-  if (typeof title !== 'string') return 'Title must be a string';
-  if (title.length < 3) return 'Title must be at least 3 characters long';
-  if (title.length > 100) return 'Title must not exceed 100 characters';
+  if (!price && price !== 0) { // Дозволяємо 0 як значення
+    throw new ValidationError('Price is required');
+  }
+  if (typeof price !== 'number') {
+    throw new ValidationError('Price must be a number');
+  }
+  if (price <= 0) {
+    throw new ValidationError('Price must be greater than 0');
+  }
 
-  if (typeof description !== 'string') return 'Description must be a string';
-  if (description.length < 4) return 'Description must be at least 10 characters long';
-  if (description.length > 1000) return 'Description must not exceed 1000 characters';
-
-  return null;
+  if (!category) {
+    throw new ValidationError('Category is required');
+  }
+  if (typeof category !== 'string' || category.trim() === '') {
+    throw new ValidationError('Category must be a non-empty string');
+  }
+  if (!userId) {
+    throw new ValidationError('User ID is required');
+  }
 };
