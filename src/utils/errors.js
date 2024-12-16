@@ -34,3 +34,31 @@ export class ClientError extends AppError {
     super(message, 400);
   }
 }
+
+//помилка авторизації 401
+export class UnauthorizedError extends AppError {
+  constructor(message = 'Unauthorized access') {
+    super(message, 401);
+  }
+}
+
+//конфлікт данних 409
+export class ConflictError extends AppError {
+  constructor(message = 'Conflict occurred') {
+    super(message, 409);
+  }
+}
+
+//помилка сервера 500
+export class InternalServerError extends AppError {
+  constructor(message = 'Internal server error') {
+    super(message, 500);
+  }
+}
+
+//сервер не доступний 503
+export class ServiceUnavailableError extends AppError {
+  constructor(message = 'Service unavailable') {
+    super(message, 503);
+  }
+}

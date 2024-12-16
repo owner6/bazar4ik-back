@@ -60,7 +60,6 @@ class authController {
       res.status(500).json({ message: 'Error during registration' });
     }
   }
-  
 
   async login(req, res) {
     try {
