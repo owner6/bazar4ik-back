@@ -7,6 +7,31 @@ export const validateRequiredFields = (data, fields) => {
   }
 };
 
+export const validateEmail = (email) => {
+  if (!email) {
+    throw new ValidationError('Email is required');
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new ValidationError('Invalid email format');
+  }
+};
+
+export const validatePassword = (password) => {
+  if (!password) {
+    throw new ValidationError('Password is required');
+  }
+  if (password.length < 8) {
+    throw new ValidationError('Password must be at least 8 characters long');
+  }
+  if (!/[A-Z]/.test(password)) {
+    throw new ValidationError('Password must contain at least one uppercase letter');
+  }
+  if (!/[0-9]/.test(password)) {
+    throw new ValidationError('Password must contain at least one number');
+  }
+};
+
 export const validateUserId = (userId) => {
   if (!userId) {
     throw new ValidationError('User ID is required');
@@ -63,3 +88,4 @@ export const validateListingData = ({ title, description, price, category, userI
     throw new ValidationError('User ID is required');
   }
 };
+
