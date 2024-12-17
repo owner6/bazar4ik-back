@@ -7,7 +7,7 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 
 const secret = process.env.SECRET_KEY;
 
-// gererate JWT
+// generate JWT
 const generateAccessToken = (id, email, phone, role) => {
   const payload = { id, email, phone, role };
   return jwt.sign(payload, secret, { expiresIn: '24h' });
