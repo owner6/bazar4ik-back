@@ -32,15 +32,6 @@ export const validatePassword = (password) => {
   }
 };
 
-export const validateUserId = (userId) => {
-  if (!userId) {
-    throw new ValidationError('User ID is required');
-  }
-  if (typeof userId !== 'string' || userId.trim() ===  '') {
-    throw new ValidationError('user id must be  a non-empty string');
-  }
-};
-
 export const validateListingData = ({ title, description, price, category, userId }) => {
   if (!title) {
     throw new ValidationError('Title is required');
@@ -88,4 +79,3 @@ export const validateListingData = ({ title, description, price, category, userI
     throw new ValidationError('User ID is required');
   }
 };
-

@@ -6,9 +6,9 @@ import {
   toggleListingStatus,
   getInactiveListings
 } from '../servises/listings.service.js';
-import { validateRequiredFields, validateUserId, validateListingData } from '../utils/validators.js';
+import { validateRequiredFields, validateListingData } from '../utils/validators.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { ValidationError, NotFoundError, ForbiddenError } from '../utils/errors.js';
+import { ValidationError, NotFoundError } from '../utils/errors.js';
 
 export const createListingAction = asyncHandler(async (req, res) => {
   const { title, description, price, category } = req.body;
