@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Users {
-  id        Int      @id @default(autoincrement())
-  firstname String   @db.VarChar(255)
-  lastname  String   @db.VarChar(255)
-  email     String   @unique
-  phone     String   @unique
-  password  String   @db.VarChar
-  role      Role     @default(user)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ads       Add[]    @relation("UserAds")
+  id        Int       @id @default(autoincrement())
+  firstname String    @db.VarChar(255)
+  lastname  String    @db.VarChar(255)
+  email     String    @unique
+  phone     String    @unique
+  password  String    @db.VarChar
+  role      Role      @default(user)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  listings  Listing[] @relation("UserListings")
 }
 
-model Add {
+model Listing {
   id          Int      @id @default(autoincrement())
   title       String
   description String
@@ -30,7 +30,7 @@ model Add {
   updatedAt   DateTime @updatedAt
   userId      Int
   isActive    Boolean  @default(true)
-  user        Users    @relation("UserAds", fields: [userId], references: [id])
+  user        Users    @relation("UserListings", fields: [userId], references: [id])
 }
 
 enum Role {

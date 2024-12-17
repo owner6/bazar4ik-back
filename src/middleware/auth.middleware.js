@@ -9,7 +9,7 @@ export function authMiddleware(req, res, next) {
   }
 
   try {
-    // Получение token  header Authorization
+    // get token  header Authorization
     const authToken = req.headers.authorization?.split(' ')[1];
 
     // if token отсутствует, возвращаем status 401
