@@ -4,7 +4,8 @@ import {
   getUserListings,
   deleteListing,
   toggleListingStatus,
-  getInactiveListings
+  getInactiveListings,
+  getAllListings
 } from '../servises/listings.service.js';
 import { validateRequiredFields, validateListingData } from '../utils/validators.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
@@ -121,4 +122,14 @@ export const getInactiveListingsAction = asyncHandler(async (req, res) => {
 
   const inactiveListings = await getInactiveListings(userId);
   res.status(200).json(inactiveListings);
+});
+
+export const getAllListingsAction = asyncHandler(async (req, res) => {
+  const listings = await getAllListings();
+
+  if (!listings || listings.length === 0) {
+    return res.status(404).json({ message: 'No listings found' });
+  }
+
+  res.status(200).json(listings);
 });

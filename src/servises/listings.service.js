@@ -89,3 +89,13 @@ export const getInactiveListings = async (userId) => {
 
     return listings;
 };
+
+export const getAllListings = async () => {
+    const listings = await prisma.listing.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
+
+    return listings;
+};
